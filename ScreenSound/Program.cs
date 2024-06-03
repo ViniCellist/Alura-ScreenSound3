@@ -1,6 +1,25 @@
 ﻿using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
+try
+{
+    var artistaDAL = new artistaDAL();
+    artistaDAL.Adicionar(new Artista("Foo Fighters", "Foo Fighters é uma banda de rock alternativo americana fomrada por Dave Grohl em 1995."));
+    var listaArtista = artistaDAL.Listar();
+
+    foreach (var artista in listaArtista)
+    {
+        Console.WriteLine(artista);
+    }
+}
+catch (Exception ex)
+{
+
+    Console.WriteLine(ex.Message);
+}
+
+return;
+
 Artista ira = new Artista("Ira!", "Banda Ira!");
 Artista beatles = new("The Beatles", "Banda The Beatles");
 
