@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using ScreenSound.Modelos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ScreenSound.Banco;
-
 internal class ArtistaDAL
 {
     public IEnumerable<Artista> Listar()
@@ -24,7 +24,6 @@ internal class ArtistaDAL
             string nomeArtista = Convert.ToString(dataReader["Nome"]);
             string bioArtista = Convert.ToString(dataReader["Bio"]);
             int idArtista = Convert.ToInt32(dataReader["id"]);
-
             Artista artista = new(nomeArtista, bioArtista) { id = idArtista };
 
             lista.Add(artista);
@@ -47,5 +46,37 @@ internal class ArtistaDAL
 
         int retorno = command.ExecuteNonQuery();
         Console.WriteLine($"Linhas afetadas {retorno}");
+    }
+
+    public void Atualizar(Artista artista)
+    {
+        using var connection = new Connection().ObterConexao();
+        connection.Open();
+
+        string sql = $"UPDATE Artistas SET Nome = @nome, Bio = @bio WHERE Id = @Id";
+        SqlCommand command = new SqlCommand(sql, connection);
+
+        command.Parameters.AddWithValue("@nome", artista.Nome);
+        command.Parameters.AddWithValue("@bio", artista.Bio);
+        command.Parameters.AddWithValue("@id", artista.Id);
+
+        int retorno = command.ExecuteNonQuery();
+
+        Console.WriteLine($"Linhas afetadas: {retorno}");
+    }
+
+    public void Deletar(Artista artista)
+    {
+        using var connection = new Connection().ObterConexao();
+        connection.Open();
+
+        string sql = $"DELETE FROM Artistas WHERE Id = @id";
+        SqlCommand command = new SqlCommand(sql , connection);
+
+        command.Parameters.AddWithValue("@id", artista.Id);
+
+        int retorno = command.ExecuteNonQuery();
+
+        Console.WriteLine($"Linhas afetadas: {retorno}");
     }
 }
