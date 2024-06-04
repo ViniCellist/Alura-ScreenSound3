@@ -1,13 +1,21 @@
-﻿using ScreenSound.Menus;
+﻿using ScreenSound.Banco;
+using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
 try
 {
-    var artistaDAL = new artistaDAL();
-    artistaDAL.Adicionar(new Artista("Foo Fighters", "Foo Fighters é uma banda de rock alternativo americana fomrada por Dave Grohl em 1995."));
-    var listaArtista = artistaDAL.Listar();
+    var context = new ScreenSoundContext();
+    var artistaDAL = new ArtistaDAL(context);
 
-    foreach (var artista in listaArtista)
+    var novoArtista = new Artista("Gilberto Gil", "Gilberto Passos Gil Moreira é um cantor, compositor, multi-instrumentista, produtor musical, político e escritor brasileiro.");
+
+    artistaDAL.Adicionar(novoArtista);
+
+    var artistaDAL = new ArtistaDAL();
+
+    var listaArtistas = artistaDAL.Listar();
+
+    foreach (var artista in listaArtistas)
     {
         Console.WriteLine(artista);
     }
